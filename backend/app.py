@@ -1,48 +1,100 @@
-from flask import Flask
+from flask import Flask, jsonify, request
 from config import Config
-from extension import db, jwt, cors
+from extension import db, jwt
 from flask_cors import CORS
+import os
+import logging
+import sys
+
+# Configure logging
+logging.basicConfig(
+    level=logging.DEBUG,
+    format='%(asctime)s %(levelname)s: %(message)s',
+    handlers=[
+        logging.StreamHandler(sys.stdout)
+    ]
+)
+logger = logging.getLogger(__name__)
+
+# Import blueprints at the top level
+from routes.auth import auth_bp
+from routes.applications import applications_bp
 
 def create_app():
     app = Flask(__name__)
     app.config.from_object(Config)
-
-    # Initialize CORS with frontend origins
-    CORS(app, resources={
-        r"/api/*": {
-            "origins": ["http://localhost:3000", "http://127.0.0.1:3000"],
-            "methods": ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
-            "allow_headers": ["Content-Type", "Authorization"]
-        }
-    })
+    
+    # Enable debug mode
+    app.debug = True
 
     # Initialize extensions
     db.init_app(app)
     jwt.init_app(app)
 
-    # Register blueprints
-    from routes.auth import auth_bp
-    from routes.applications import applications_bp
+    # Configure CORS
+    CORS(app, 
+         resources={
+             r"/*": {
+                 "origins": ["http://localhost:3000"],
+                 "methods": ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+                 "allow_headers": ["Content-Type", "Authorization"],
+                 "supports_credentials": True
+             }
+         })
 
+    # Register blueprints directly
     app.register_blueprint(auth_bp, url_prefix='/api/auth')
     app.register_blueprint(applications_bp, url_prefix='/api/applications')
 
-    # Create database tables and initialize admin
+    # Create database directory if it doesn't exist
+    db_path = app.config['SQLALCHEMY_DATABASE_URI'].replace('sqlite:///', '')
+    db_dir = os.path.dirname(db_path)
+    if not os.path.exists(db_dir):
+        os.makedirs(db_dir)
+        logger.info(f"Created database directory: {db_dir}")
+
+    # Create database tables
     with app.app_context():
-        db.create_all()
-        
-        # Create admin user if it doesn't exist
-        from models import Admin
-        admin_email = "admin@sanskriti.edu"
-        if not Admin.query.filter_by(email=admin_email).first():
-            admin = Admin(email=admin_email)
-            admin.set_password("admin123")  # Default password, change in production
-            db.session.add(admin)
-            db.session.commit()
-            print(f"Created admin user: {admin_email}")
+        try:
+            db.create_all()
+            logger.info("Database tables created successfully")
+        except Exception as e:
+            logger.error(f"Error creating database tables: {e}")
+            raise
+
+    # Print all registered routes
+    logger.info("\nRegistered Routes:")
+    for rule in app.url_map.iter_rules():
+        logger.info(f"{rule.endpoint}: {rule.methods} {rule.rule}")
+
+    # Add error handlers
+    @app.errorhandler(404)
+    def not_found_error(error):
+        logger.error(f"404 error: {error}")
+        return jsonify({"error": "Not Found", "path": request.path}), 404
+
+    @app.errorhandler(500)
+    def internal_error(error):
+        logger.error(f"500 error: {error}")
+        db.session.rollback()
+        return jsonify({"error": "Internal Server Error", "details": str(error)}), 500
+
+    @app.errorhandler(Exception)
+    def handle_exception(error):
+        logger.error(f"Unhandled exception: {error}")
+        db.session.rollback()
+        return jsonify({"error": "Internal Server Error", "details": str(error)}), 500
 
     return app
 
+# Create the application instance
+app = create_app()
+
 if __name__ == '__main__':
-    app = create_app()
-    app.run(debug=True)
+    # Get port from environment variable or default to 5000
+    port = int(os.environ.get('PORT', 5000))
+    print(f"\nStarting Flask application on port {port}...")
+    print("\nRegistered Routes:")
+    for rule in app.url_map.iter_rules():
+        print(f"{rule.endpoint}: {rule.methods} {rule.rule}")
+    app.run(host='0.0.0.0', port=port)

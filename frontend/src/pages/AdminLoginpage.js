@@ -1,27 +1,53 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
+import { adminLogin } from '../services/api';  // ✅ Use centralized API call
 
-// --- STYLES (These were missing before) ---
+// --- STYLES ---
 const LoginPageContainer = styled.div`
-  display: flex; justify-content: center; align-items: center; min-height: 80vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 80vh;
 `;
-const LoginForm = styled.form`
-  width: 90%; max-width: 400px; padding: 40px;
-  background: #0a183d; border: 1px solid #2a3f7a; border-radius: 10px;
-  display: flex; flex-direction: column; gap: 20px;
-`;
-const Input = styled.input`
-  padding: 12px; border-radius: 4px; border: 1px solid #2a3f7a;
-  background-color: #071029; color: white; font-size: 16px;
-`;
-const Button = styled.button`
-  background-color: #f7b500; color: #0a183d; font-weight: bold;
-  border: none; padding: 15px; border-radius: 4px;
-  cursor: pointer; font-size: 16px;
-`;
-const ErrorText = styled.p` color: #ff4d4d; text-align: center; margin: 0; `;
 
+const LoginForm = styled.form`
+  width: 90%;
+  max-width: 400px;
+  padding: 40px;
+  background: #0a183d;
+  border: 1px solid #2a3f7a;
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+`;
+
+const Input = styled.input`
+  padding: 12px;
+  border-radius: 4px;
+  border: 1px solid #2a3f7a;
+  background-color: #071029;
+  color: white;
+  font-size: 16px;
+`;
+
+const Button = styled.button`
+  background-color: #f7b500;
+  color: #0a183d;
+  font-weight: bold;
+  border: none;
+  padding: 15px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 16px;
+`;
+
+const ErrorText = styled.p`
+  color: #ff4d4d;
+  text-align: center;
+  margin: 0;
+`;
 
 const AdminLoginPage = ({ setAdminLoggedIn }) => {
   const [email, setEmail] = useState('');
@@ -34,19 +60,12 @@ const AdminLoginPage = ({ setAdminLoggedIn }) => {
     setError('');
 
     try {
-      const response = await fetch('/api/admin/login', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email, password }),
-      });
-      const data = await response.json();
-      if (!response.ok) throw new Error(data.message || 'Login failed');
-      
+      const data = await adminLogin({ email, password });  // ✅ Centralized API call
       localStorage.setItem('adminToken', data.token);
-      setAdminLoggedIn(true); 
+      setAdminLoggedIn(true);
       navigate('/admin/applications');
     } catch (err) {
-      setError(err.message);
+      setError(err.message || 'Login failed');
     }
   };
 
@@ -54,11 +73,20 @@ const AdminLoginPage = ({ setAdminLoggedIn }) => {
     <LoginPageContainer>
       <LoginForm onSubmit={handleLogin}>
         <h2>Admin Login</h2>
-        <Input type="email" placeholder="Email" value={email} onChange={(e) => setEmail(e.target.value)} required />
-        <Input type="password" placeholder="Password" value={password} onChange={(e) => setPassword(e.target.value)} required />
-        
-        <div style={{ textAlign: 'right', marginTop: '-10px' }}>
-        </div>
+        <Input
+          type="email"
+          placeholder="Email"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          required
+        />
+        <Input
+          type="password"
+          placeholder="Password"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+          required
+        />
 
         {error && <ErrorText>{error}</ErrorText>}
         <Button type="submit">Login</Button>

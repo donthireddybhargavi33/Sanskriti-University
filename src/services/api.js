@@ -1,3 +1,4 @@
+import { logApiCall } from './your-log-file'; // Use correct path
 // Use relative path for proper proxy support
 const API_BASE_URL = '/api';
 

@@ -65,7 +65,7 @@ const AdminApplicationsPage = () => {
           return;
         }
         
-        const data = await getApplications(token);
+        const data = await getApplications();
         setApplications(data);
       } catch (error) {
         console.error("Error:", error);

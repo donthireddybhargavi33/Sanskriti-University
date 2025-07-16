@@ -14,7 +14,7 @@ def login():
     admin = Admin.query.filter_by(email=data['email']).first()
 
     if admin and admin.check_password(data['password']):
-        access_token = create_access_token(identity=admin.id)
+        access_token = create_access_token(identity=str(admin.id))
         return jsonify({'token': access_token}), 200
 
     return jsonify({'error': 'Invalid credentials'}), 401

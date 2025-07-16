@@ -73,14 +73,18 @@ export const submitApplication = async (applicationData) => {
 
 export const getApplications = async () => {
     const token = localStorage.getItem('adminToken');
-    if (!token) throw new Error('No authentication token found');
+    if (!token) {
+        console.error('No authentication token found');
+        throw new Error('No authentication token found');
+    }
+
+    console.log('Using Token:', token);
 
     const response = await fetch(`${API_BASE_URL}/applications/list`, {
         method: 'GET',
         headers: {
             'Authorization': `Bearer ${token}`,
-            'Accept': 'application/json',
-            'Content-Type': 'application/json'
+            'Accept': 'application/json'
         }
     });
 

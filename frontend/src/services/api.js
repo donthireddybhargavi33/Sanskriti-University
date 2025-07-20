@@ -5,6 +5,7 @@ const handleResponse = async (response) => {
     const text = await response.text();
     console.log('Raw response:', text);
 
+
     let data;
     try {
         data = JSON.parse(text);
@@ -20,6 +21,10 @@ const handleResponse = async (response) => {
     return data;
 };
 
+// ==================== Admin Authentication ====================
+
+// Admin Login
+export const adminLogin = async (credentials) => {
 // ==================== Admin Authentication ====================
 
 // Admin Login
@@ -48,7 +53,10 @@ export const adminRegister = async (credentials) => {
         console.log(`Registering admin at: ${API_BASE_URL}/auth/register`);
 
         const response = await fetch(`${API_BASE_URL}/auth/register`, {
+        const response = await fetch(`${API_BASE_URL}/auth/register`, {
             method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(credentials)
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(credentials)
         });
@@ -56,7 +64,9 @@ export const adminRegister = async (credentials) => {
 
         return handleResponse(response);
 
+
     } catch (error) {
+        console.error('Admin registration failed:', error);
         console.error('Admin registration failed:', error);
         throw error;
     }
@@ -81,7 +91,23 @@ export const getApplications = async () => {
         console.error('No authentication token found');
         throw new Error('No authentication token found');
     }
+    const token = localStorage.getItem('adminToken');
+    if (!token) {
+        console.error('No authentication token found');
+        throw new Error('No authentication token found');
+    }
 
+    console.log('Using Token:', token);
+
+    const response = await fetch(`${API_BASE_URL}/applications/list`, {
+        method: 'GET',
+        headers: {
+            'Authorization': `Bearer ${token}`,
+            'Accept': 'application/json'
+        }
+    });
+
+    return handleResponse(response);
     console.log('Using Token:', token);
 
     const response = await fetch(`${API_BASE_URL}/applications/list`, {

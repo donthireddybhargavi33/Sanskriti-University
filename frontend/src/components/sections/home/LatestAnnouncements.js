@@ -4,27 +4,27 @@ import { FiArrowRight } from 'react-icons/fi';
 
 const Section = styled.section`
   padding: 3rem 0;
-  background: #0a183d;
+  background: #1a2c5a;
   color: white;
 `;
 
 const Container = styled.div`
-  max-width: 1200px;
-  margin: 0 auto;
+  max-width: 800px;
+  width: 90%;
   padding: 0 1rem;
   display: grid;
   grid-template-columns: 2fr 1fr;
-  gap: 2rem;
-  
-  @media (max-width: 768px) {
+  gap: 1rem;
+
+  @media (max-width: 968px) {
     grid-template-columns: 1fr;
   }
 `;
 
 const Title = styled.h2`
-  font-size: 2.5rem;
+  font-size: 1.5rem;
   font-weight: 700;
-  margin-bottom: 2rem;
+  margin-bottom: 1rem;
   color: white;
   position: relative;
   
@@ -48,7 +48,7 @@ const AnnouncementList = styled.div`
 const AnnouncementCard = styled.a`
   background: rgba(255, 255, 255, 0.05);
   border: 1px solid rgba(255, 255, 255, 0.1);
-  padding: 1.5rem;
+  padding: 1rem;
   border-radius: 12px;
   cursor: pointer;
   transition: all 0.3s ease;
@@ -98,32 +98,6 @@ const MoreUpdates = styled.button`
   }
 `;
 
-const SuccessStats = styled.div`
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 1.5rem;
-`;
-
-const StatCard = styled.div`
-  background: rgba(255, 255, 255, 0.05);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  padding: 1.5rem;
-  border-radius: 12px;
-  text-align: center;
-
-  h3 {
-    font-size: 2.5rem;
-    font-weight: 700;
-    color: #e0b100;
-    margin-bottom: 0.5rem;
-  }
-
-  p {
-    font-size: 0.9rem;
-    color: rgba(255, 255, 255, 0.8);
-  }
-`;
-
 const LatestAnnouncements = () => {
   const announcements = [
     {
@@ -142,17 +116,7 @@ const LatestAnnouncements = () => {
       title: "Ph.D. Admission Notification (Session 2025-26)",
       link: "#"
     },
-    {
-      title: "Prescribed fees of Provisional, Migration, Degree, Alumni Charges",
-      link: "#"
-    }
-  ];
 
-  const stats = [
-    { number: "85%", label: "Student Placed on highest package" },
-    { number: "2500+", label: "Research Papers" },
-    { number: "6.20 Lakhs", label: "Average Package offered by 200+ Companies" },
-    { number: "54 Lakhs", label: "Highest Package" }
   ];
 
   return (
@@ -174,18 +138,6 @@ const LatestAnnouncements = () => {
             CLICK FOR MORE UPDATES
             <FiArrowRight size={18} />
           </MoreUpdates>
-        </div>
-
-        <div>
-          <Title>OUR SUCCESS</Title>
-          <SuccessStats>
-            {stats.map((stat, index) => (
-              <StatCard key={index}>
-                <h3>{stat.number}</h3>
-                <p>{stat.label}</p>
-              </StatCard>
-            ))}
-          </SuccessStats>
         </div>
       </Container>
     </Section>

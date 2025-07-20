@@ -8,7 +8,7 @@ const SuccessStats = () => {
       <div className="text-center mb-12">
         <h2 className="text-3xl font-bold">OUR SUCCESS</h2>
       </div>
-      <div className="max-w-4xl mx-auto grid grid-cols-1 sm:grid-cols-2 gap-8">
+      <div className="max-w-2xl mx-auto grid grid-cols-1 sm:grid-cols-2 gap-8">
         {SUCCESS_STATS.map((stat, index) => (
           <StatCard key={index} stat={stat} />
         ))}
@@ -16,5 +16,3 @@ const SuccessStats = () => {
     </section>
   );
 };
-
-export default SuccessStats;

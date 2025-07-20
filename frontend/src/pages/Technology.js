@@ -1,8 +1,25 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 
 const Technology = () => {
   return (
     <div style={{backgroundColor:'white'}} className="technology-page container mx-auto px-4 py-8">
+            <Link to="/" style={{
+         position: 'absolute',
+        display: 'flex',
+        padding: '10px 2px',
+        backgroundColor: '#f7b500',
+        color: '#0a183d',
+        borderRadius: '4px',
+        textDecoration: 'none',
+        fontWeight: '600',
+        fontSize: '1rem',
+        textTransform: 'uppercase',
+        letterSpacing: '0.5px',
+        transition: 'all 0.3s ease',
+      }}>
+        Home
+      </Link><br></br>
       <h1 className="text-3xl font-bold mb-6">Technologically Ahead</h1>
 
       <p className="mb-4">
@@ -16,7 +33,7 @@ const Technology = () => {
       <p className="mb-4">
         Sanskriti believes in maximizing use of technology in the field of education for enhancement of quality and providing exposure to the students to different forms of technology in the field of education for enhancement of knowledge.
       </p>
-
+      <img src="/images/technology.jpeg" alt="Technology at Sanskriti University" className="w-full h-auto rounded-lg shadow-md mb-4 mx-auto block" />
       <h2 className="text-2xl font-semibold mb-4">Following are the major steps taken by Sanskriti for use of technology :</h2>
       <ul className="list-inside mb-6 space-y-1 custom-bullets">
         <li>Online Training Programmes from Experts from Tata Steel as part of MoU with Tata Steel</li>

@@ -3,10 +3,10 @@ import { ANNOUNCEMENTS } from '../constants';
 
 const Announcements = () => {
   return (
-    <section className="bg-white py-16 px-4">
+    <Section style={{ flex: 1, minWidth: '500px' }}>
       <div className="max-w-2xl mx-auto">
         <div className="text-center mb-12">
-          <h2 className="text-3xl font-bold text-sanskriti-blue-dark">
+          <h2 className="text-xl font-bold text-sanskriti-blue-dark">
             LATEST ANNOUNCEMENTS
           </h2>
         </div>
@@ -39,7 +39,7 @@ const Announcements = () => {
           </a>
         </div>
       </div>
-    </section>
+    </Section>
   );
 };
 

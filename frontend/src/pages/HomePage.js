@@ -2,9 +2,7 @@
 
 import React from 'react';
 import Slider from 'react-slick';
-import { Link } from 'react-router-dom';
 import styled from 'styled-components';
-import Testimonials from '../components/sections/home/Testimonials';
 import SUReviews from './SUReviews';
 import TopHighlights from '../components/sections/home/TopHighlights';
 import LatestAnnouncements from '../components/sections/home/LatestAnnouncements';
@@ -18,18 +16,28 @@ import {
   HeroSlider,
   HeroSlide,
   HeroContent,
-  HighlightCard,
-  StatsGrid,
-  Card,
   StatNumber,
   StatText,
   RecruiterLogoSlide,
-  CollaborationButtons
 } from '../App';
 
-// Local Styled Components
+const FlexSection = styled.section`
+  display: flex;
+  gap: 2rem;
+  margin: 1rem 0;
+  padding: 0px 90px;
+  @media (max-width: 768px) {
+    flex-direction: column;
+    padding: 0 10px;
+  }
+`;
+
+const FlexChild = styled.div`
+  flex: 1;
+`;
+
 const MainWrapper = styled.div`
-  background: #0a183d;
+  background: #1a2c5a;
   min-height: 100vh;
   width: 100%;
   color: white;
@@ -51,6 +59,9 @@ const StatsGridItem = styled.div`
 
 const FeatureCard = styled.div`
   position: relative;
+  display: flex;
+  width: 1400px;
+  padding: 40px;
   height: 300px;
   background-image: url(${props => props.bg});
   background-size: cover;
@@ -86,6 +97,21 @@ const FeatureContent = styled.div`
   }
 `;
 
+const Card = styled.div` background: linear-gradient(145deg,rgb(96, 133, 227), #0e1a3d); border-radius: 10px; padding: 25px 20px; text-align: center; border: 1px solid #2a3f7a; margin-bottom: 20px; `;
+const StatsGrid = styled.div`
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 15px;
+
+  ${Card} {
+    margin-bottom: 0;
+  }
+
+  @media (max-width: 768px) {
+    grid-template-columns: 1fr;
+  }
+`;
+
 const HomePage = () => {
   const recruiterSliderSettings = { dots: false, infinite: true, speed: 500, slidesToShow: 3, slidesToScroll: 1, autoplay: true, arrows: true };
   const heroSliderSettings = {
@@ -100,9 +126,9 @@ const HomePage = () => {
   return (
     <MainWrapper>
       <div>
-        <HeroSlider {...heroSliderSettings}>
+        <HeroSlider style={{maxwidth:'100%',height:'100%',paddingTop:'1px'}} {...heroSliderSettings}>
           {/* Slide 1 */}
-          <HeroSlide bg="https://images.unsplash.com/photo-1556761175-b413da4baf72?q=80&w=1974&auto=format&fit=crop">
+          <HeroSlide  bg="https://images.unsplash.com/photo-1556761175-b413da4baf72?q=80&w=1974&auto=format&fit=crop">
             <HeroContent>
               <h1>Where Innovation Meets Opportunity</h1>
               <p><strong>2.5 Crore</strong></p>
@@ -112,7 +138,7 @@ const HomePage = () => {
           </HeroSlide>
           
           {/* Slide 2 */}
-          <HeroSlide bg="https://images.unsplash.com/photo-1522071820081-009f0129c71c?q=80&w=2070&auto=format&fit=crop">
+          <HeroSlide src="/images/clg33.jpeg" bg="https://images.unsplash.com/photo-1504384308090-c894fdcc538d?q=80&w=2070&auto=format&fit=crop">
             <HeroContent>
               <h1>Cutting-Edge Research Facilities</h1>
               <p><strong>State-of-the-art Labs</strong></p>
@@ -134,52 +160,58 @@ const HomePage = () => {
 
         <TopHighlights />
 
-        <Section>
-          <SectionTitle>TOP HIGHLIGHTS</SectionTitle>
-          <HighlightCard>
-            <img src="https://images.unsplash.com/photo-1587825140708-dfaf72ae4b04?q=80&w=2070&auto=format&fit=crop" alt="Business Conclave" />
-            <p>Sanskriti Business Conclave 2025</p>
-          </HighlightCard>
-        </Section>
-
-        <div style={{ display: 'flex', gap: '2rem', flexWrap: 'wrap' }}>
-          <LatestAnnouncements />
-
-          {/* Right Section - Stats */}
-          <Section style={{ flex: 1, minWidth: '300px' }}>
+        <FlexSection>
+          <FlexChild>
+            <LatestAnnouncements />
+          </FlexChild>
+          <Section>
             <SectionTitle>OUR SUCCESS</SectionTitle>
-            <StatsGrid>
-              <Card style={{ flex: 1 , border: '2px dotted #ccc', padding: '30px',textAlign: 'center' , background: 'linear-gradient(135deg, #213774 50%, #0b1e4f 50%)',borderRadius: '15px', }}><StatNumber  style={{  color:'white' , fontSize:'35px', fontWeight:'lighter'}}>85%</StatNumber><StatText  style={{  color:'white'}}>Student Placed on highest package</StatText></Card>
-              <Card style={{ flex: 1 , border: '2px dotted #ccc', padding: '30px',textAlign: 'center', padding: '30px' , borderRadius: '15px',background: 'rgb(33, 55, 116)'}}><StatNumber  style={{  color:'rgb(229, 207, 42)', fontSize:'35px', fontWeight:'lighter' }}>2500+</StatNumber><StatText  style={{  color:'white'}}>Research Papers</StatText></Card>
-              <Card style={{ flex: 1 , border: '2px dotted #ccc', padding: '30px',textAlign: 'center',borderRadius: '15px', background: 'rgb(33, 55, 116)'}}><StatNumber  style={{  color:'rgb(229, 207, 42)', fontSize:'35px', fontWeight:'lighter'}}>6.20 Lakhs</StatNumber><StatText  style={{  color:'white'}}>Average Package offered by 200+ Companies</StatText></Card>
-              <Card style={{ flex: 1 , border: '2px dotted #ccc', padding: '30px',textAlign: 'center' , borderRadius: '15px', background: 'linear-gradient(122deg, #213774 50%, #0b1e4f 50%)'}}><StatNumber  style={{  color:'white', fontSize:'35px', fontWeight:'lighter',marginTop:'35px'}}>2700+</StatNumber><StatText  style={{  color:'white'}}>Patents</StatText></Card>
-              <Card style={{ flex: 1 , border: '2px dotted #ccc', padding: '30px',textAlign: 'center',borderRadius: '15px', background: 'linear-gradient(125deg, #213774 50%, #0b1e4f 50%)' }}><StatNumber  style={{  color:'white', fontSize:'35px', fontWeight:'lighter'}}>54 Lakhs</StatNumber><StatText  style={{  color:'white'}}>Highest Package</StatText></Card>
-              <Card style={{ flex: 1 , border: '2px dotted #ccc', padding: '30px',textAlign: 'center',borderRadius: '15px' ,background: 'rgb(33, 55, 116)' }}><StatNumber style={{  color:'rgb(229, 207, 42)', fontSize:'35px', fontWeight:'lighter'}}>200+</StatNumber><StatText  style={{  color:'white'}}>Companies visited campus for Placement</StatText></Card>
+            <StatsGrid >
+              <Card style={{ flex: 1 , border: '2px dotted #ccc', padding: '40px',textAlign: 'center' , background: 'linear-gradient(135deg, #1a2c5a 50%, #0b1e4f 50%)',borderRadius: '15px', }}><StatNumber  style={{  color:'white' , fontSize:'35px', fontWeight:'lighter'}}>85%</StatNumber><StatText  style={{  color:'white'}}>Student Placed on highest package</StatText></Card>
+              <Card style={{ flex: 1 , border: '2px dotted #ccc', padding: '40px',textAlign: 'center', borderRadius: '15px',background: '#1a2c5a'}}><StatNumber  style={{  color:'rgb(229, 207, 42)', fontSize:'35px', fontWeight:'lighter' }}>2500+</StatNumber><StatText  style={{  color:'white'}}>Research Papers</StatText></Card>
+              <Card style={{ flex: 1 , border: '2px dotted #ccc', padding: '40px',textAlign: 'center',borderRadius: '15px', background: '#1a2c5a'}}><StatNumber  style={{  color:'rgb(229, 207, 42)', fontSize:'35px', fontWeight:'lighter'}}>6.20 Lakhs</StatNumber><StatText  style={{  color:'white'}}>Average Package offered by 200+ Companies</StatText></Card>
+              <Card style={{ flex: 1 , border: '2px dotted #ccc', padding: '40px',textAlign: 'center' , borderRadius: '15px', background: 'linear-gradient(122deg, #1a2c5a 50%, #0b1e4f 50%)'}}><StatNumber  style={{  color:'white', fontSize:'35px', fontWeight:'lighter',marginTop:'35px'}}>2700+</StatNumber><StatText  style={{  color:'white'}}>Patents</StatText></Card>
+              <Card style={{ flex: 1 , border: '2px dotted #ccc', padding: '40px',textAlign: 'center',borderRadius: '15px', background: 'linear-gradient(125deg, #1a2c5a 50%, #0b1e4f 50%)' }}><StatNumber  style={{  color:'white', fontSize:'35px', fontWeight:'lighter'}}>54 Lakhs</StatNumber><StatText  style={{  color:'white'}}>Highest Package</StatText></Card>
+              <Card style={{ flex: 1 , border: '2px dotted #ccc', padding: '40px',textAlign: 'center',borderRadius: '15px' ,background: '#1a2c5a' }}><StatNumber style={{  color:'rgb(229, 207, 42)', fontSize:'35px', fontWeight:'lighter'}}>200+</StatNumber><StatText  style={{  color:'white'}}>Companies visited campus for Placement</StatText></Card>
             </StatsGrid>
           </Section>
-        </div>
+        </FlexSection>
+
+
 
         <Section>
           <SectionTitle>OUR PLACEMENTS</SectionTitle>
           <Slider {...recruiterSliderSettings}>
-            <RecruiterLogoSlide> <img src="https://www.sanskriti.edu.in/images/recruiters/shree-cement.png" alt="Shree Cement" /> </RecruiterLogoSlide>
-            <RecruiterLogoSlide> <img src="https://www.sanskriti.edu.in/images/recruiters/tcs.png" alt="TCS" /> </RecruiterLogoSlide>
-            <RecruiterLogoSlide> <img src="https://www.sanskriti.edu.in/images/recruiters/vedantu.png" alt="Vedantu" /> </RecruiterLogoSlide>
-            <RecruiterLogoSlide> <img src="https://www.sanskriti.edu.in/images/recruiters/w.png" alt="W" /> </RecruiterLogoSlide>
-            <RecruiterLogoSlide> <img src="https://www.sanskriti.edu.in/images/recruiters/genpact.png" alt="Genpact" /> </RecruiterLogoSlide>
-            <RecruiterLogoSlide> <img src="https://www.sanskriti.edu.in/images/recruiters/hcl.png" alt="HCL" /> </RecruiterLogoSlide>
+            <RecruiterLogoSlide> <img src="/images/tcs.jpeg" alt="TCS" /> </RecruiterLogoSlide>
+            <RecruiterLogoSlide> <img src="/images/vedantu.jpeg" alt="Vedantu" /> </RecruiterLogoSlide>
+            <RecruiterLogoSlide> <img src="/images/byjus.jpeg" alt="Byjus" /></RecruiterLogoSlide>
+            <RecruiterLogoSlide> <img src="/images/genpact.jpeg" alt="Genpact" /> </RecruiterLogoSlide>
+            <RecruiterLogoSlide> <img src="/images/fedex.jpeg" alt="FedEX" /> </RecruiterLogoSlide>
+            <RecruiterLogoSlide> <img src="/images/shreecement.jpeg" alt="Shree Cement" /> </RecruiterLogoSlide>
+            <RecruiterLogoSlide><img src="/images/bajaj.jpeg" alt="Bajaj" /></RecruiterLogoSlide> 
+            <RecruiterLogoSlide><img src="/images/godrej.jpeg" alt="Goorej" /></RecruiterLogoSlide>
+            <RecruiterLogoSlide><img src="/images/jcb.jpeg" alt="JCB" /> </RecruiterLogoSlide>
+            <RecruiterLogoSlide><img src="/images/maruthi.jpeg" alt="Maruthi Suzuki" /></RecruiterLogoSlide>
+            <RecruiterLogoSlide> <img src="/images/Radisson.jpg" alt="Radisson" /></RecruiterLogoSlide>
+            <RecruiterLogoSlide><img src="/images/tatasteel.jpeg" alt="Tata Steel" /></RecruiterLogoSlide>
+            <RecruiterLogoSlide><img src="/images/paytm.jpeg" alt="Paytym" /></RecruiterLogoSlide>
+            <RecruiterLogoSlide><img src="/images/hdfc.jpeg" alt="HDFC Bank" /> </RecruiterLogoSlide>
+            <RecruiterLogoSlide><img src="/images/whitehat.jpeg" alt="Whitehat Jr" /></RecruiterLogoSlide>
+            <RecruiterLogoSlide><img src="/images/lemeridian.jpeg" alt="Le Meridian" /></RecruiterLogoSlide>
+            <RecruiterLogoSlide><img src="/images/larsen.jpeg" alt="Larsen and Toubro" /></RecruiterLogoSlide>
+            <RecruiterLogoSlide><img src="/images/amazon.jpeg" alt="Amazon" /></RecruiterLogoSlide>
           </Slider>
         </Section>
         
         <Collaborations />
         
-        <Section>
-          <SectionTitle>WHY CHOOSE SU?</SectionTitle>
-           <p style={{textAlign: 'center', marginTop: '-15px', marginBottom: '20px', color: '#ccc'}}>Be a part of an Edifying learning experience which offers additional value to your future.</p>
+        <Section style={{ backgroundColor: '#f7f8faff', color: '#000000ff' }}>
+          <SectionTitle style={{ backgroundColor: '#f7f8faff', color: '#000000ff' ,fontSize:'40px'}}>WHY CHOOSE SU?</SectionTitle>
+           <p style={{textAlign: 'center', marginTop: '-15px', marginBottom: '20px', color: 'black'}}>Be a part of an Edifying learning experience which offers additional value to your future.</p>
           <FeatureCard bg="https://images.unsplash.com/photo-1521737604893-d14cc237f11d?q=80&w=2084&auto=format&fit=crop">
               <FeatureContent> <h3>Top Reasons To Join SU</h3> <p>Honored with many awards for high-quality education, infrastructure and research.</p> <button>VIEW MORE</button> </FeatureContent>
           </FeatureCard>
-          <FeatureCard style={{margin: '20px 0'}} bg="https://images.unsplash.com/photo-1541829076-2489e51a721b?q=80&w=2070&auto=format&fit=crop">
+          <FeatureCard style={{margin: '20px 0'}} bg="https://images.unsplash.com/photo-1522071820081-009f0129c71c?q=80&w=2070&auto=format&fit=crop">
               <FeatureContent> <h3>50+ International University</h3> <p>Tie-Ups For Student Exchange Programme.</p> <button>VIEW MORE</button> </FeatureContent>
           </FeatureCard>
           <FeatureCard bg="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?q=80&w=2071&auto=format&fit=crop">
@@ -204,7 +236,7 @@ const HomePage = () => {
             style={{
               textAlign: 'center',
               marginTop: '-10px',
-              marginBottom: '20px',
+              marginBottom: '10px',
               color: 'rgb(33, 55, 116)',
               fontSize: '1.3rem',
               fontFamily: 'Poppins, sans-serif',
@@ -236,26 +268,6 @@ const HomePage = () => {
             </StatsGridItem>
           </StatsContainer>
         </Section>
-        
-        <Section>
-          <Testimonials />
-        </Section>
-
-        <section className="py-12 px-4">
-          <div className="text-center mb-8">
-            <h2 className="text-3xl font-bold">LIFE @ SU</h2>
-            <p className="mt-2 text-gray-300">
-              The most vibrant campus, to give you the most vibrant learning experience.
-            </p>
-          </div>
-          <div className="max-w-4xl mx-auto rounded-lg overflow-hidden shadow-lg">
-            <img
-              src="https://picsum.photos/seed/lifeatsu/800/500"
-              alt="Students playing football"
-              className="w-full h-auto"
-            />
-          </div>
-        </section>
 
         <EventsAndLife />
 
@@ -266,3 +278,5 @@ const HomePage = () => {
 };
 
 export default HomePage;
+
+       

@@ -21,7 +21,7 @@ from routes.auth import auth_bp
 from routes.applications import applications_bp
 
 def create_app():
-    app = Flask(__name__)
+    app = Flask(__name__, static_folder='build', static_url_path='')
     app.config.from_object(Config)
     
     # Enable debug mode
@@ -66,6 +66,17 @@ def create_app():
     logger.info("\nRegistered Routes:")
     for rule in app.url_map.iter_rules():
         logger.info(f"{rule.endpoint}: {rule.methods} {rule.rule}")
+
+    # Serve React index.html for non-API routes
+    @app.route('/', defaults={'path': ''})
+    @app.route('/<path:path>')
+    def serve_react(path):
+        if path.startswith('api/'):
+            return jsonify({"error": "API route not found"}), 404
+        if path != "" and os.path.exists(os.path.join(app.static_folder, path)):
+            return app.send_static_file(path)
+        else:
+            return app.send_static_file('index.html')
 
     # Add error handlers
     @app.errorhandler(404)

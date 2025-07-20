@@ -2,9 +2,12 @@ import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route, Link, NavLink, useNavigate, useLocation } from 'react-router-dom';
 import styled from 'styled-components';
 import Slider from 'react-slick';
-import { FaPhoneAlt, FaEnvelope, FaWhatsapp, FaBars, FaGraduationCap, FaImages, FaShareAlt } from 'react-icons/fa';
+import { FaWhatsapp } from 'react-icons/fa';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+
+import PhotoGallery from './pages/photo';
+import VideoGallery from './pages/video';
 
 // Page and Component Imports
 import HomePage from './pages/HomePage';
@@ -15,13 +18,27 @@ import ApplyNowModal from './components/ApplyNowModal';
 import AdminLoginPage from './pages/AdminLoginpage';
 import AdminApplicationsPage from './pages/AdminApplicationsPage';
 import ProtectedRoute from './components/ProtectedRoute';
-import AboutUsPage from './pages/AboutUsPage';
-import AcademicsPage from './pages/AcademicsPage';
-import AdmissionsPage from './pages/AdmissionsPage';
-import ContactUsPage from './pages/ContactUsPage';
-import InfrastructurePage from './pages/InfrastructurePage';
+import University from  './pages/University';
+import Vision from './pages/Vision';
+import Rankings from './pages/Rankings';
+import Technology from './pages/Technology';
+import ContactUs from './pages/contact';
 import ApplicationReceivedPage from './pages/ApplicationReceivedPage';
-
+import Faculty from './pages/Faculty';
+import Syllabus from './pages/Syllabus';
+import AcademicCalender from './pages/Academic_Calender';
+import ExaminationRules from './pages/Examination_Rules';
+import AdmissionProcess from './pages/AdmissionProcess';
+import AdmisssionAssistance from './pages/AdmisssionAssistance';
+import Fees from './pages/fees';
+import Rules from './pages/Rules';
+import Environment from './pages/Environment';
+import Sports from './pages/Sports';
+import Cafeteria from './pages/Cafeteria';
+import Medical from './pages/Medical';
+import Hostel from './pages/Hostel';
+import Library from './pages/Library';
+import Theatre from './pages/Theatre';
 // Slick Carousel CSS
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
@@ -91,27 +108,11 @@ const ApplyNowButton = styled.button`
   font-size: 14px;
 `;
 
-const AccessibilityButton = styled.button`
-  position: fixed;
-  left: 0;
-  top: 50%;
-  transform: translateY(-50%) rotate(-90deg);
-  transform-origin: left top;
-  background-color: #f7b500;
-  color: #0a183d;
-  font-weight: bold;
-  border: none;
-  padding: 8px 16px;
-  border-top-left-radius: 8px;
-  border-top-right-radius: 8px;
-  cursor: pointer;
-  z-index: 999;
-  font-size: 14px;
-`;
 
 // Exported Styled Components
 export const Section = styled.section`
   padding: 20px 15px;
+
 `;
 
 export const SectionTitle = styled.h2`
@@ -156,7 +157,7 @@ export const HeroSlider = styled(Slider)`
 `;
 
 export const HeroSlide = styled.div`
-  height: 400px;
+  height: 600px;
   background-image: url(${props => props.bg});
   background-size: cover;
   background-position: center;
@@ -238,25 +239,23 @@ export const StatText = styled.p`
 
 export const RecruiterLogoSlide = styled.div`
   background-color: white;
-  border-radius: 8px;
-  padding: 20px 0;
+  border-radius: 10px;
+  padding: 15px 0;
   margin: 0 10px;
   display: flex !important;
   align-items: center;
   justify-content: center;
   height: 40px;
   img {
-    max-height: 40px;
-    max-width: 80%;
-    filter: grayscale(100%);
-    opacity: 0.7;
+    width: 100%;
+    height: 240%;
+    object-fit: contain;
+    opacity: 1;
     transition: all 0.3s ease;
   }
-  &:hover img {
-    filter: grayscale(0%);
-    opacity: 1;
-  }
+
 `;
+
 
 export const CollaborationButtons = styled.div`
   display: flex;
@@ -293,49 +292,7 @@ const Footer = styled.footer`
     }
   }
 `;
-const BottomNav = styled.div`
-  display: flex;
-  justify-content: space-around;
-  align-items: center;
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  background-color: #0a183d;
-  border-top: 1px solid #2a3f7a;
-  padding: 5px 0;
-  z-index: 1000;
-`;
-const NavItem = styled(NavLink)`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  color: #ccc;
-  font-size: 10px;
-  cursor: pointer;
-  text-decoration: none;
-  &.active {
-    color: #f7b500;
-  }
-  svg {
-    font-size: 20px;
-    margin-bottom: 3px;
-  }
-`;
-const CentralNavItem = styled(Link)`
-  width: 50px;
-  height: 50px;
-  border-radius: 50%;
-  background-color: #071029;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-top: -25px;
-  border: 2px solid #2a3f7a;
-  img {
-    height: 30px;
-  }
-`;
+
 const FloatingButtons = styled.div`
   position: fixed;
   bottom: 80px;
@@ -360,15 +317,21 @@ const FloatingButton = styled.a`
 `;
 const SubHeader = styled.nav`
   background-color: #0e1a3d;
-  padding: 10px 15px;
+  padding: 10px 10px;
   display: flex;
   justify-content: center;
   align-items: center;
-  gap: 25px;
+  gap: 20px;
+  margin-left: 90px;
   border-bottom: 1px solid #1a2c5a;
   position: relative;
   @media (max-width: 768px) {
-    display: none;
+    display: flex;
+    flex-wrap: nowrap;
+    -webkit-overflow-scrolling: touch;
+    gap: 10px;
+    margin-right: 70px;
+    padding: 10px 5px;
   }
 `;
 
@@ -426,6 +389,7 @@ const DropdownLink = styled(Link)`
   }
 `;
 
+
 const AppContent = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isAdminLoggedIn, setIsAdminLoggedIn] = useState(false);
@@ -470,10 +434,9 @@ const AppContent = () => {
               </>
             ) : (
               <>
-                <AdminLink to="/admin/login">Admin</AdminLink>
-                <FaPhoneAlt />
-                <FaEnvelope />
-                <FaShareAlt />
+                <AdminLink style= {{fontSize:'20px' ,fontWeight:'bold'
+                }} to="/admin/login">Admin</AdminLink>
+
               </>
             )}
           </HeaderIcons>
@@ -481,131 +444,124 @@ const AppContent = () => {
         
         <SubHeader style={{background: 'rgb(33, 55, 116)'}}>
           <NavLinkContainer>
-            <NavLinkStyled to="/about-us">About Us</NavLinkStyled>
+            <NavLinkStyled >About</NavLinkStyled>
             <DropdownMenu className="dropdown-menu">
-              <DropdownLink to="/about/university">The University</DropdownLink>
-              <DropdownLink to="/about/vision">Vision & Mission</DropdownLink>
-              <DropdownLink to="/about/leadership">Leadership</DropdownLink>
-              <DropdownLink to="/about/recognition">Recognition & Accreditation</DropdownLink>
+              <DropdownLink to="/about/University">The University</DropdownLink>
+              <DropdownLink to="/about/Vision">Vision & Mission</DropdownLink>
+              <DropdownLink to="/about/Rankings">Rankings & Awards</DropdownLink>
+              <DropdownLink to="/about/Technology">Technologically Ahead</DropdownLink>
             </DropdownMenu>
           </NavLinkContainer>
 
           <NavLinkContainer>
-            <NavLinkStyled to="/academics">Academics</NavLinkStyled>
+            <NavLinkStyled >Academics</NavLinkStyled>
             <DropdownMenu className="dropdown-menu">
-              <DropdownLink to="/academics/schools">Schools</DropdownLink>
-              <DropdownLink to="/academics/departments">Departments</DropdownLink>
-              <DropdownLink to="/academics/research">Research</DropdownLink>
-              <DropdownLink to="/academics/library">Library</DropdownLink>
+              <DropdownLink to="/academics/Faculty">Faculty</DropdownLink>
+              <DropdownLink to="/academics/Syllabus">Syllabus</DropdownLink>
+              <DropdownLink to="/academics/Academic_Calender">Academic Calender</DropdownLink>
+              <DropdownLink to="/academics/Examination_Rules">Examination Rules</DropdownLink>
             </DropdownMenu>
           </NavLinkContainer>
 
           <NavLinkContainer>
-            <NavLinkStyled to="/admissions">Admissions</NavLinkStyled>
+            <NavLinkStyled >Admissions</NavLinkStyled>
             <DropdownMenu className="dropdown-menu">
-              <DropdownLink to="/admissions/process">Admission Process</DropdownLink>
-              <DropdownLink to="/admissions/programs">Programs Offered</DropdownLink>
-              <DropdownLink to="/admissions/fees">Fee Structure</DropdownLink>
-              <DropdownLink to="/admissions/scholarships">Scholarships</DropdownLink>
+              <DropdownLink to="/admissions/AdmissionProcess">Admission Process</DropdownLink>
+              <DropdownLink to="programmes">Programs Offered</DropdownLink>
+              <DropdownLink to="/admissions/fees">Fees Structure</DropdownLink>
+              <DropdownLink to="/admissions/AdmissionAssistance">Admission Assistance</DropdownLink>
+              <DropdownLink to="/admissions/Rules">Rules</DropdownLink>
             </DropdownMenu>
           </NavLinkContainer>
 
           <NavLinkContainer>
             <NavLinkStyled to="/programmes">Programmes</NavLinkStyled>
-            <DropdownMenu className="dropdown-menu">
-              <DropdownLink to="/programmes/undergraduate">Undergraduate</DropdownLink>
-              <DropdownLink to="/programmes/postgraduate">Postgraduate</DropdownLink>
-              <DropdownLink to="/programmes/phd">Ph.D Programs</DropdownLink>
-              <DropdownLink to="/programmes/diploma">Diploma Courses</DropdownLink>
-            </DropdownMenu>
+
           </NavLinkContainer>
 
           <NavLinkContainer>
-            <NavLinkStyled to="/infrastructure">Infrastructure</NavLinkStyled>
-            <DropdownMenu className="dropdown-menu">
-              <DropdownLink to="/infrastructure/campus">Campus</DropdownLink>
-              <DropdownLink to="/infrastructure/facilities">Facilities</DropdownLink>
-              <DropdownLink to="/infrastructure/hostel">Hostel</DropdownLink>
-              <DropdownLink to="/infrastructure/sports">Sports</DropdownLink>
-            </DropdownMenu>
+          <NavLinkStyled >Infrastructure</NavLinkStyled> 
+          <DropdownMenu className="dropdown-menu">
+            <DropdownLink to="/infrastructure/Environment">Campus Environment</DropdownLink>
+            <DropdownLink to="/infrastructure/Library">Library</DropdownLink>
+            <DropdownLink to="/infrastructure/Sports">Sports</DropdownLink>
+            <DropdownLink to="/infrastructure/Cafeteria">Cafeteria</DropdownLink>
+            <DropdownLink to="/infrastructure/Medical">Medical Facilities</DropdownLink>
+            <DropdownLink to="/infrastructure/Theatre">Theatre</DropdownLink>
+            <DropdownLink to="/infrastructure/Hostel">Hostel Facilities</DropdownLink>    
+          </DropdownMenu>         
+        </NavLinkContainer>
+
+          <NavLinkContainer>
+            <NavLinkStyled to="/contact-us">Contact</NavLinkStyled>
           </NavLinkContainer>
 
           <NavLinkContainer>
-            <NavLinkStyled to="/contact-us">Contact Us</NavLinkStyled>
+            <NavLinkStyled >Gallery</NavLinkStyled>
             <DropdownMenu className="dropdown-menu">
-              <DropdownLink to="/contact-us/reach-us">How to Reach Us</DropdownLink>
-              <DropdownLink to="/contact-us/enquiry">General Enquiry</DropdownLink>
-              <DropdownLink to="/contact-us/careers">Careers</DropdownLink>
+            <DropdownLink to="/GalleryPage/photo">Photo</DropdownLink>
+            <DropdownLink to="/GalleryPage/video">Video</DropdownLink>
             </DropdownMenu>
           </NavLinkContainer>
+
         </SubHeader>
 
-        <div onClick={() => setIsModalOpen(true)} style={{ position: 'absolute', top: '65px', right: '15px', zIndex: 99, cursor: 'pointer' }}>
+        <div onClick={() => setIsModalOpen(true)} style={{ position: 'absolute', top: '105px', right: '15px', zIndex: 99, cursor: 'pointer' }}>
            <ApplyNowButton>APPLY NOW</ApplyNowButton>
         </div>
         
         <main>
-           <Routes>
-            {/* All existing public and admin routes */}
-            <Route path="/" element={<HomePage />} />
-            
-            {/* About Us Routes */}
-            <Route path="/about-us" element={<AboutUsPage />} />
-            <Route path="/about/university" element={<AboutUsPage section="university" />} />
-            <Route path="/about/vision-mission" element={<AboutUsPage section="vision-mission" />} />
-            <Route path="/about/advisory-board" element={<AboutUsPage section="advisory-board" />} />
-            <Route path="/about/rankings" element={<AboutUsPage section="rankings" />} />
-            <Route path="/about/recognition" element={<AboutUsPage section="recognition" />} />
-            <Route path="/about/quality-assurance" element={<AboutUsPage section="quality" />} />
-            <Route path="/about/technology" element={<AboutUsPage section="technology" />} />
-            
-            {/* Leadership Routes */}
-            <Route path="/leadership/chairman" element={<AboutUsPage section="chairman" />} />
-            <Route path="/leadership/chancellor" element={<AboutUsPage section="chancellor" />} />
-            <Route path="/leadership/pro-chancellor" element={<AboutUsPage section="pro-chancellor" />} />
-            <Route path="/leadership/vice-chancellor" element={<AboutUsPage section="vice-chancellor" />} />
-            <Route path="/leadership/ceo" element={<AboutUsPage section="ceo" />} />
-            
-            {/* Main Navigation Routes */}
-            <Route path="/programmes" element={<ProgrammesPage />} />
-            <Route path="/academics" element={<AcademicsPage />} />
-            <Route path="/admissions" element={<AdmissionsPage />} />
-            <Route path="/infrastructure" element={<InfrastructurePage />} />
-            <Route path="/contact-us" element={<ContactUsPage />} />
-            <Route path="/gallery" element={<GalleryPage />} />
-            
-            {/* Admin Routes */}
-            <Route path="/admin/login" element={<AdminLoginPage setAdminLoggedIn={setIsAdminLoggedIn} />} />
-            <Route path="/admin/applications" element={<ProtectedRoute><AdminApplicationsPage /></ProtectedRoute>} />
-            <Route path="/application-received" element={<ApplicationReceivedPage />} />
-            
-            {/* 404 Route */}
-            <Route path="*" element={<NotFoundPage />} />
+          <Routes>
+          {/* All existing public and admin routes */}
+          <Route path="/" element={<HomePage />} />
+          
+          {/* About Us Routes */}
+          <Route path="/about/University" element={<University />} />
+          <Route path="/about/Vision" element={<Vision />} /> 
+          <Route path="/about/Technology" element={<Technology />} />
+          <Route path="/about/Rankings" element={<Rankings />} />
+          
+          <Route path="/academics/Faculty" element={<Faculty />} />
+          <Route path="/academics/Syllabus" element={<Syllabus />} /> 
+          <Route path="/academics/Academic_Calender" element={<AcademicCalender />} />
+          <Route path="/academics/Examination_Rules" element={<ExaminationRules />} />
+
+          {/* Main Navigation Routes */}
+          <Route path="/programmes" element={<ProgrammesPage />} />
+          <Route path="/contact-us" element={<ContactUs />} />
+          <Route path="/gallery" element={<GalleryPage />} />
+          <Route path="/faculty" element={<Faculty />} />
+          <Route path="/admissions/AdmissionProcess" element={<AdmissionProcess openApplyModal={() => setIsModalOpen(true)} />} />
+          <Route path="/admissions/AdmissionAssistance" element={<AdmisssionAssistance />} />
+          <Route path="/admissions/fees" element={<Fees />}/>
+          <Route path="/admissions/Rules" element={<Rules />} />
+          <Route path="/infrastructure/Environment" element={<Environment />} />
+          <Route path="/infrastructure/Sports" element={<Sports />} />
+          <Route path="/infrastructure/Cafeteria" element={<Cafeteria />} />
+          <Route path="/infrastructure/Medical" element={<Medical />} />
+          <Route path="/infrastructure/Hostel" element={<Hostel />} />
+          <Route path="/infrastructure/Library" element={<Library />} />
+          <Route path="/infrastructure/Theatre" element={<Theatre />} />
+          <Route path="/GalleryPage/photo" element={<PhotoGallery />} />
+          <Route path="/GalleryPage/video" element={<VideoGallery />} />
+          {/* Admin Routes */}
+          <Route path="/admin/login" element={<AdminLoginPage setAdminLoggedIn={setIsAdminLoggedIn} />} />
+          <Route path="/admin/applications" element={<ProtectedRoute><AdminApplicationsPage /></ProtectedRoute>} />
+          <Route path="/application-received" element={<ApplicationReceivedPage />} />
+          
+          {/* 404 Route */} 
+          <Route path="*" element={<NotFoundPage />} />
           </Routes>
         </main>
-
         <Footer>
             <SectionTitle>ONLINE FEE PAYMENT</SectionTitle>
             <img src="https://www.sanskriti.edu.in/images/logo.png" alt="Sanskriti University Logo" />
             <p>28 K. M. Stone, Mathura - Delhi Highway, Chhata, Mathura (U.P.), (INDIA)</p>
-            <p>Landline No: <a href="tel:+918074101457">+91 8074101457</a>, <a href="tel:8074101457">8074101457</a></p>
-            <p>Email ID: <a href="mailto:enquiry@sanskriti.co.in">enquiry@sanskriti.co.in</a></p>
-            <p>Helpline No: <a href="tel:+91">+91 </a></p>
+            <p>Contact No: <a href="tel:+91 73868 12345">+91 73868 12345</a></p>
+            <p>Email ID: <a href="mailto:admissions@sanskriti.co.in">admissions@sanskriti.co.in</a></p>
         </Footer>
-
-        <BottomNav>
-          <NavItem to="/programmes"> <FaGraduationCap /> PROGRAMMES </NavItem>
-          <NavItem to="/gallery"> <FaImages /> GALLERY </NavItem>
-          <CentralNavItem to="/"> <img src="https://www.sanskriti.edu.in/images/logo_icon.png" alt="Logo Icon"/> </CentralNavItem>
-          <div onClick={() => setIsModalOpen(true)} style={{display: 'flex', flexDirection: 'column', alignItems: 'center', color: '#ccc', fontSize: '10px', cursor: 'pointer'}}>
-             <svg stroke="currentColor" fill="currentColor" strokeWidth="0" viewBox="0 0 1024 1024" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg" style={{fontSize: "22px", marginBottom: "3px"}}><path d="M649.9 298.3h-56.4c-22.7 0-45.9 9.1-45.9 50.8v47.2h97.4l-15.6 102.3h-81.8v274.6h-119V500.4H393.3V398.1h34.8v-59.3c0-40.4 18.3-99.8 107.1-99.8h84.5v99.3zM512 0C229.2 0 0 229.2 0 512s229.2 512 512 512 512-229.2 512-512S794.8 0 512 0zm0 928C282.3 928 96 741.7 96 512S282.3 96 512 96s416 186.3 416 416-186.3 416-416 416z"></path></svg>
-            APPLY NOW
-          </div>
-          <NavItem to="/menu"> <FaBars /> MENU </NavItem>
-        </BottomNav>
-
-        <FloatingButtons>
-            <FloatingButton href="https://wa.me/918074101457" target="_blank" bg="#25D366"> <FaWhatsapp /> </FloatingButton>
+<FloatingButtons>
+            <FloatingButton href="https://wa.me/917386812345" target="_blank" bg="#25D366"> <FaWhatsapp /> </FloatingButton>
         </FloatingButtons>
       </AppContainer>
     </>

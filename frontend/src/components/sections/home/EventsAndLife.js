@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 
 const SectionContainer = styled.section`
@@ -73,29 +73,76 @@ const NavigationArrows = styled.div`
 `;
 
 const EventsAndLife = () => {
+  const eventsImages = [
+  '/photos/E4.jpeg',
+  '/photos/E5.jpeg',
+  '/photos/E6.jpeg',
+  '/photos/E7.jpeg',
+  '/photos/E8.jpeg',
+  '/photos/E9.jpeg',
+  '/photos/E10.jpeg',
+  '/photos/E11.jpeg',
+  ];
+
+  const lifeImages = [
+    '/photos/E26.jpeg',
+    "/images/clg1.jpeg",
+  '/photos/E28.jpeg',
+  '/photos/E16.jpeg',
+  '/photos/E17.jpeg'
+
+  ];
+
+  const [currentImageIndex, setCurrentImageIndex] = useState(0);
+  const [lifeCurrentImageIndex, setLifeCurrentImageIndex] = useState(0);
+
+  const handlePrevClick = () => {
+    setCurrentImageIndex((prevIndex) =>
+      prevIndex === 0 ? eventsImages.length - 1 : prevIndex - 1
+    );
+  };
+
+  const handleNextClick = () => {
+    setCurrentImageIndex((prevIndex) =>
+      prevIndex === eventsImages.length - 1 ? 0 : prevIndex + 1
+    );
+  };
+
+  const handleLifePrevClick = () => {
+    setLifeCurrentImageIndex((prevIndex) =>
+      prevIndex === 0 ? lifeImages.length - 1 : prevIndex - 1
+    );
+  };
+
+  const handleLifeNextClick = () => {
+    setLifeCurrentImageIndex((prevIndex) =>
+      prevIndex === lifeImages.length - 1 ? 0 : prevIndex + 1
+    );
+  };
+
   return (
-    <SectionContainer>
-      <Section>
-        <SectionTitle>EVENTS & MORE</SectionTitle>
-        <SectionDescription>
+    <SectionContainer style={{ backgroundColor: '#1e2c5f',color: 'white' }}>
+      <Section  style={{ backgroundColor: '#1e2c5f',color: 'white' }}>
+        <SectionTitle style={{color:'white' }}>EVENTS & MORE</SectionTitle>
+        <SectionDescription  style={{ backgroundColor: '#1e2c5f',color: 'white' }}>
           A reflection of the most enriching blend of Cultural & Academic events.
         </SectionDescription>
         <ImageContainer>
-          <Image src="/images/events-image.jpg" alt="University Events" />
-          <NavigationArrows direction="left">‹</NavigationArrows>
-          <NavigationArrows direction="right">›</NavigationArrows>
+          <Image src={eventsImages[currentImageIndex]} alt="University Events" />
+          <NavigationArrows direction="left" onClick={handlePrevClick}>‹</NavigationArrows>
+          <NavigationArrows direction="right" onClick={handleNextClick}>›</NavigationArrows>
         </ImageContainer>
       </Section>
 
-      <Section>
-        <SectionTitle>LIFE @ SU</SectionTitle>
-        <SectionDescription>
+      <Section style={{ backgroundColor:'#1e2c5f',color:'white' }}>
+        <SectionTitle style={{backgroundColor:'#1e2c5f',color:'white' }}>LIFE @ SU</SectionTitle>
+        <SectionDescription style={{backgroundColor:'#1e2c5f',color:'white' }}>
           The most vibrant campus,to give you the most vibrant learning experience.
         </SectionDescription>
         <ImageContainer>
-          <Image src="/images/campus-life.jpg" alt="Life at SU" />
-          <NavigationArrows direction="left">‹</NavigationArrows>
-          <NavigationArrows direction="right">›</NavigationArrows>
+          <Image src={lifeImages[lifeCurrentImageIndex]} alt="Life at SU" />
+          <NavigationArrows direction="left" onClick={handleLifePrevClick}>‹</NavigationArrows>
+          <NavigationArrows direction="right" onClick={handleLifeNextClick}>›</NavigationArrows>
         </ImageContainer>
       </Section>
     </SectionContainer>

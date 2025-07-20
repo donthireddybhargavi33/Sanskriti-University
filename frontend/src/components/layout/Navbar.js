@@ -3,13 +3,13 @@ import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 
 const NavContainer = styled.nav`
-  background: linear-gradient(135deg, #0a183d 0%, #1a2c5a 100%);
+  background: transparent;
   padding: 0.5rem 0;
   position: fixed;
   width: 100%;
   top: 0;
   z-index: 1000;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.15);
+  box-shadow: none;
 `;
 
 const NavContent = styled.div`
@@ -30,6 +30,13 @@ const NavLinks = styled.div`
   display: flex;
   gap: 1rem;
   align-items: center;
+
+  @media (max-width: 768px) {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    gap: 0.5rem;
+    padding: 0.5rem 1rem;
+  }
 `;
 
 const NavItem = styled.div`
@@ -64,6 +71,11 @@ const NavItem = styled.div`
     font-size: 0.7rem;
     margin-left: 0.5rem;
     transition: transform 0.3s ease;
+  }
+
+  @media (max-width: 768px) {
+    padding: 1rem 0.5rem;
+    font-size: 0.85rem;
   }
 `;
 
@@ -178,12 +190,38 @@ const Navbar = () => {
               <DropdownItem to="/programmes/diploma">Diploma</DropdownItem>
             </Dropdown>
           </NavItem>
-          {/* Add other nav items with similar structure */}
+          <NavItem hasDropdown>
+            ACADEMICS
+            <Dropdown className="dropdown">
+              <DropdownItem to="/academics/faculty">Faculty</DropdownItem>
+              <DropdownItem to="/academics/syllabus">Syllabus</DropdownItem>
+              <DropdownItem to="/academics/academic_calender">Academic Calender</DropdownItem>
+              <DropdownItem to="/academics/examination_rules">Examination Rules</DropdownItem>
+            </Dropdown>
+          </NavItem>
+          <NavItem hasDropdown>
+            INFRASTRUCTURE
+            <Dropdown className="dropdown">
+              <DropdownItem to="/Infrastructure/process">Sports</DropdownItem>
+              <DropdownItem to="/Infrastructure/programs">Programs Offered</DropdownItem>
+              <DropdownItem to="/Infrastructure/fees">Fee Structure</DropdownItem>
+              <DropdownItem to="/Infrastructure/scholarships">Scholarships</DropdownItem>
+            </Dropdown>
+          </NavItem>
+                    <NavItem hasDropdown>
+            ADMISSIONS
+            <Dropdown className="dropdown">
+              <DropdownItem to="/Admissions/AdmissionProcess">Admission Process</DropdownItem>
+              <DropdownItem to="/Admissions/syllabus">Syllabus</DropdownItem>
+              <DropdownItem to="/Admissions/academic_calender">Academic Calender</DropdownItem>
+              <DropdownItem to="/Admissions/examination_rules">Examination Rules</DropdownItem>
+            </Dropdown>
+          </NavItem>
         </NavLinks>
         <ContactInfo>
           <AdmissionButton to="/admissions/apply">APPLY NOW</AdmissionButton>
-          <PhoneNumber href="tel:1800-120-2880">
-            <span>1800-120-2880</span>
+          <PhoneNumber href="tel:807410145">
+            <span>8074101457</span>
           </PhoneNumber>
         </ContactInfo>
       </NavContent>

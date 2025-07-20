@@ -1,85 +1,88 @@
-import { logApiCall } from './your-log-file'; // Use correct path
-// Use relative path for proper proxy support
-const API_BASE_URL = '/api';
+const API_BASE_URL = 'http://localhost:5000/api';
 
-// Debug function to log all API calls
-const logApiCall = (method, endpoint, body = null) => {
-    console.log(`API Call: ${method} ${endpoint}`);
-    if (body) console.log('Request Body:', body);
-};
+const handleResponse = async (response) => {
+    const text = await response.text();
+    console.log('Raw response:', text);
 
-// Admin Authentication
-export const adminLogin = async (email, password) => {
-    logApiCall('POST', '/auth/login', { email });
-    const response = await fetch(`${API_BASE_URL}/auth/login`, {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ email, password }),
-    });
-    
-    if (!response.ok) {
-        const error = await response.json();
-        throw new Error(error.error || 'Login failed');
+    let data;
+    try {
+        data = JSON.parse(text);
+    } catch (e) {
+        console.error('Failed to parse response as JSON:', text);
+        throw new Error('Invalid response format');
     }
-    
-    return response.json();
+
+    if (!response.ok) {
+        throw new Error(data.error || 'An error occurred');
+    }
+
+    return data;
 };
 
-// Application Submission
+// ==================== Admin Authentication ====================
+
+// Admin Login
+export const adminLogin = async (credentials) => {
+    try {
+        console.log('Logging in admin at:', `${API_BASE_URL}/auth/login`);
+
+        const response = await fetch(`${API_BASE_URL}/auth/login`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(credentials)
+        });
+
+        return handleResponse(response);
+
+    } catch (error) {
+        console.error('Admin login failed:', error);
+        throw error;
+    }
+};
+
+// Admin Registration
+export const adminRegister = async (credentials) => {
+    try {
+        console.log('Registering admin at:', `${API_BASE_URL}/auth/register`);
+
+        const response = await fetch(`${API_BASE_URL}/auth/register`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(credentials)
+        });
+
+        return handleResponse(response);
+
+    } catch (error) {
+        console.error('Admin registration failed:', error);
+        throw error;
+    }
+};
+
+// ==================== Application Submission ====================
+
 export const submitApplication = async (applicationData) => {
-    logApiCall('POST', '/applications', applicationData);
-    const response = await fetch(`${API_BASE_URL}/applications`, {
+    const response = await fetch(`${API_BASE_URL}/applications/submit`, {
         method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(applicationData),
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(applicationData)
     });
-    
-    if (!response.ok) {
-        const error = await response.json();
-        throw new Error(error.error || 'Application submission failed');
-    }
-    
-    return response.json();
+
+    return handleResponse(response);
 };
 
-// Get Applications (Admin only)
-export const getApplications = async (token) => {
-    logApiCall('GET', '/applications');
-    const response = await fetch(`${API_BASE_URL}/applications`, {
-        headers: {
-            'Authorization': `Bearer ${token}`,
-            'Content-Type': 'application/json',
-        },
-    });
-    
-    if (!response.ok) {
-        const error = await response.json();
-        throw new Error(error.error || 'Failed to fetch applications');
-    }
-    
-    return response.json();
-};
+export const getApplications = async () => {
+    const token = localStorage.getItem('adminToken');
+    if (!token) throw new Error('No authentication token found');
 
-// Update Application Status (Admin only)
-export const updateApplicationStatus = async (applicationId, status, token) => {
-    logApiCall('PUT', `/applications/${applicationId}`, { status });
-    const response = await fetch(`${API_BASE_URL}/applications/${applicationId}`, {
-        method: 'PUT',
+    const response = await fetch(`${API_BASE_URL}/applications/list`, {
+        method: 'GET',
         headers: {
             'Authorization': `Bearer ${token}`,
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ status }),
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+        }
     });
-    
-    if (!response.ok) {
-        const error = await response.json();
-        throw new Error(error.error || 'Failed to update application status');
-    }
-    
-    return response.json();
+
+    return handleResponse(response);
 };

@@ -1,8 +1,25 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 
 const University = () => {
   return (
-    <div className="container mx-auto px-4 py-8" style={{ color: 'black', backgroundColor: 'white' }}>
+    <div style={{ padding: '20px', backgroundColor: '#f0f0f0' }}>
+                  <Link to="/" style={{
+               position: 'absolute',
+              display: 'flex',
+              padding: '10px 2px',
+              backgroundColor: '#f7b500',
+              color: '#0a183d',
+              borderRadius: '4px',
+              textDecoration: 'none',
+              fontWeight: '600',
+              fontSize: '1rem',
+              textTransform: 'uppercase',
+              letterSpacing: '0.5px',
+              transition: 'all 0.3s ease',
+            }}>
+              Home
+            </Link><br></br>
       <div className="flex flex-col lg:flex-row gap-8" style={{ paddingLeft: '50px' }}>
         {/* Left side content */}
         <div className="flex-1">
@@ -33,7 +50,10 @@ const University = () => {
               The vision of the founding fathers of Sanskriti University, a group of eminent philanthropists, was instrumental in its phenomenal growth ever since it was established in the year 2016. Since its inception, it has been robustly growing in terms of the quality of students and education imparted to them. The Chancellor and the Pro-Chancellor are well-educated and enterprising young persons and their team has been working tirelessly to catapult Sanskriti University into the list of top private universities in India. Their efforts have enabled them to establish this university after duly getting it notified under U.P. State Act. In its vision statement, the university has outlined the plan of ensuring continuous growth in different fields of education with the ultimate aim of being recognized as one of the best private universities in India.
             </p>
           </div>
-
+      <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '20px' }}>
+        <img src="/images/sanskriti.webp" alt="University " style={{ width: '28%',marginLeft:'150px', borderRadius: '8px' }} />
+        <img src="/images/sanskriti1.jpg" alt="University" style={{ width: '28%', marginRight:'150px', borderRadius: '8px' }} />
+      </div>
           <p className="mb-4">
             Spread over an expansive area of more than 40 plus acres Green Campus on NH-2 Chhata, Mathura, Sanskriti University is just 57 km from Delhi NCR. The state-of-the-art infrastructure and architectural excellence help the University make a strong impression. The University has been established with an idea of bringing “Excellence in Life” to the students. Amidst the plethora of universities in Uttar Pradesh, Sanskriti University has made a mark of its own.
           </p>

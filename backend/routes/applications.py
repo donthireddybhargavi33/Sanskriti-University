@@ -94,7 +94,8 @@ def submit_application():
 def get_applications():
     try:
         logger.info("Fetching applications list")
-        applications = Application.query.order_by(Application.submitted_at.desc()).all()
+        # Change ordering to ascending by submitted_at
+        applications = Application.query.order_by(Application.submitted_at.asc()).all()
         
         applications_list = [{
             'id': app.id,
@@ -106,7 +107,7 @@ def get_applications():
             'course': app.course,
             'message': app.message,
             'status': app.status,
-            'submitted_at': app.submitted_at.isoformat()
+            'submitted_at': app.submitted_at.isoformat() + 'Z'
         } for app in applications]
         
         logger.info(f"Successfully fetched {len(applications_list)} applications")
@@ -138,3 +139,32 @@ def update_application_status(app_id):
     except Exception as e:
         logger.error(f"Error updating application status: {str(e)}")
         return jsonify({'error': 'Failed to update application status'}), 500
+
+@applications_bp.route('/clear', methods=['DELETE'])
+@jwt_required()
+def clear_applications():
+    try:
+        logger.info("Clearing all application records")
+        num_deleted = Application.query.delete()
+        db.session.commit()
+        logger.info(f"Deleted {num_deleted} application records")
+        return jsonify({'message': f'Successfully deleted {num_deleted} application records'}), 200
+    except Exception as e:
+        db.session.rollback()
+        logger.error(f"Error clearing applications: {str(e)}")
+        return jsonify({'error': 'Failed to clear applications'}), 500
+
+@applications_bp.route('/<int:app_id>', methods=['DELETE'])
+@jwt_required()
+def delete_application(app_id):
+    try:
+        logger.info(f"Deleting application with ID: {app_id}")
+        application = Application.query.get_or_404(app_id)
+        db.session.delete(application)
+        db.session.commit()
+        logger.info(f"Successfully deleted application with ID: {app_id}")
+        return jsonify({'message': f'Application {app_id} deleted successfully'}), 200
+    except Exception as e:
+        db.session.rollback()
+        logger.error(f"Error deleting application {app_id}: {str(e)}")
+        return jsonify({'error': f'Failed to delete application {app_id}'}), 500

@@ -47,6 +47,5 @@ class Application(db.Model):
             'city': self.city,
             'course': self.course,
             'message': self.message,
-            'status': self.status,
             'submitted_at': self.submitted_at.isoformat() if self.submitted_at else None
         }

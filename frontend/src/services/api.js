@@ -1,11 +1,10 @@
-// Base URL for API calls
-const API_BASE_URL = '/api';
 
-// Helper function to handle API responses
+const API_BASE_URL = 'http://localhost:5000/api';
+
 const handleResponse = async (response) => {
     const text = await response.text();
     console.log('Raw response:', text);
-    
+
     let data;
     try {
         data = JSON.parse(text);
@@ -21,56 +20,77 @@ const handleResponse = async (response) => {
     return data;
 };
 
-// Application Submission
-export const submitApplication = async (applicationData) => {
-    try {
-        console.log('Submitting application to:', `${API_BASE_URL}/applications/submit`);
-        console.log('Application data:', applicationData);
+// ==================== Admin Authentication ====================
 
-        const response = await fetch(`${API_BASE_URL}/applications/submit`, {
+// Admin Login
+export const adminLogin = async (credentials) => {
+    try {
+        console.log(`Logging in admin at: ${API_BASE_URL}/auth/login`);
+
+        const response = await fetch(`${API_BASE_URL}/auth/login`, {
             method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(applicationData)
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(credentials)
         });
 
+
         return handleResponse(response);
+
     } catch (error) {
-        console.error('Error submitting application:', error);
+        console.error('Admin login failed:', error);
         throw error;
     }
 };
 
-// Get Applications (Admin)
-export const getApplications = async () => {
+// Admin Registration
+export const adminRegister = async (credentials) => {
     try {
-        const token = localStorage.getItem('adminToken');
-        if (!token) {
-            throw new Error('No authentication token found');
-        }
+        console.log(`Registering admin at: ${API_BASE_URL}/auth/register`);
 
-        logApiCall('GET', '/applications/list');
-        
-        const response = await fetch(`${API_BASE_URL}/applications/list`, {
-            method: 'GET',
-            headers: {
-                'Authorization': `Bearer ${token}`,
-                'Accept': 'application/json',
-                'Content-Type': 'application/json'
-            }
+        const response = await fetch(`${API_BASE_URL}/auth/register`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(credentials)
         });
 
-        if (!response.ok) {
-            const errorData = await response.json();
-            throw new Error(errorData.error || 'Failed to fetch applications');
-        }
 
-        const data = await response.json();
-        console.log('Received applications:', data);
-        return data;
+        return handleResponse(response);
+
     } catch (error) {
-        console.error('Error fetching applications:', error);
+        console.error('Admin registration failed:', error);
         throw error;
     }
+};
+
+// ==================== Application Submission ====================
+
+export const submitApplication = async (applicationData) => {
+    const response = await fetch(`${API_BASE_URL}/applications/submit`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(applicationData)
+    });
+
+
+    return handleResponse(response);
+};
+
+export const getApplications = async () => {
+    const token = localStorage.getItem('adminToken');
+    if (!token) {
+        console.error('No authentication token found');
+        throw new Error('No authentication token found');
+    }
+
+    console.log('Using Token:', token);
+
+    const response = await fetch(`${API_BASE_URL}/applications/list`, {
+        method: 'GET',
+        headers: {
+            'Authorization': `Bearer ${token}`,
+            'Accept': 'application/json'
+        }
+    });
+
+    return handleResponse(response);
 };

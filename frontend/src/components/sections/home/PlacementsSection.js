@@ -15,11 +15,12 @@ const Placements = () => {
       </div>
       <div className="bg-white py-8">
         <div className="max-w-4xl mx-auto overflow-x-auto">
-          <div className="flex justify-around items-center space-x-8">
+          <div className="flex items-center space-x-8">
             {COMPANIES.map((company, index) => (
               <div
                 key={index}
                 className="flex-shrink-0 grayscale hover:grayscale-0 transition-all duration-300"
+                style={{ minWidth: '20%' }} // 5 logos visible (100% / 5 = 20%)
               >
                 {company.logo}
               </div>

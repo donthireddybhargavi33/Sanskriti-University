@@ -20,6 +20,7 @@
   },
   "scripts": {
   "start": "concurrently \"npm run start-react\" \"npm run start-flask\"",
+  "start-all": "concurrently \"npm run --prefix frontend start\" \"npm run --prefix backend start\""
   "start-react": "react-scripts start",
   "start-flask": "cd ../backend && flask run",
    "build": "react-scripts build",

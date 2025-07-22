@@ -72,7 +72,7 @@ multidict==6.5.0
 narwhals==1.45.0
 nest-asyncio==1.6.0
 networkx==3.3
-numpy==1.26.1
+numpy==1.25.2
 ollama==0.5.1
 opencv-contrib-python==4.8.1.78
 orjson==3.10.18

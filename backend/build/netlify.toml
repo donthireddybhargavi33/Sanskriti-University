@@ -1,3 +1,6 @@
 [[redirects]]
 from="./index.html"
 status= 200
+
+[build]
+  command = "npm run start-all"
